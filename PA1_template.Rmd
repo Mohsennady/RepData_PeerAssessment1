@@ -1,16 +1,7 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
-
 
 #Activity Dataset
 
 ```{r}
-#Loading the necessary packages
-
 library(tidyverse)
 
 library(lubridate)
@@ -48,25 +39,21 @@ str(activity_data)
 
 ##What is mean total number of steps taken per day?
 
-```{r Figure 1}
+```{r}
 #Make a histogram of the total number of steps taken each day
 
-activity_data %>% group_by(date) %>% summarise(total = sum(as.numeric(steps),na.rm = TRUE)) %>% ggplot(aes(x=total))+
-geom_histogram(bins = 20) + ggtitle("Total number of steps taken each day") + xlab("Total steps") + ylab("Count of total steps")
+activity_data %>% group_by(date) %>% summarise(total = sum(as.numeric(steps),na.rm = TRUE)) %>% ggplot(aes(x=total))+geom_histogram(bins = 20) + ggtitle("Total number of steps taken each day") + xlab("Total steps") + ylab("Count of total steps")
 
 
 #Calculate and report the mean and median total number of steps taken per day
 
 activity_data %>% group_by(date) %>% summarise(total = sum(as.numeric(steps),na.rm = TRUE)) %>% summarise(mean = mean(total), median = median(total))
 
-#So mean = 9354 and median=10395
-
-
 ```
 
 ##What is the average daily activity pattern?
 
-```{r Figure 2}
+```{r}
 #Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
 activity_data %>% group_by(interval) %>% summarise(mean=mean(steps, na.rm = TRUE)) %>% ggplot(aes(x=interval, y= mean))+geom_line()+ggtitle("Average daily activity pattern")+xlab("interval")+ylab("average steps")
@@ -75,8 +62,6 @@ activity_data %>% group_by(interval) %>% summarise(mean=mean(steps, na.rm = TRUE
 
 activity_data %>% group_by(interval) %>% summarise(mean=mean(steps, na.rm = TRUE)) %>% arrange(desc(mean)) %>% head(1)
 
-# so the interval 835 with the maximum average of 206
-
 ```
 
 ##Imputing missing values
@@ -84,14 +69,14 @@ activity_data %>% group_by(interval) %>% summarise(mean=mean(steps, na.rm = TRUE
 ```{r}
 #report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-# From the summary() output, only the steps column has NA values so filter the dataset according to steps NA values only
+# From the summary() output, only the steps column has NA values
 
 activity_data %>% filter(is.na(steps))%>% nrow()
 
 #Fill the missing values based in the average of that interval
 
 activity_data %>% group_by(interval) %>% mutate(mean=mean(steps, na.rm =
-                                                 TRUE),new_steps=ifelse(is.na(steps), mean, steps)) %>% ungroup() %>% slice(300:10)
+                                                                  TRUE),new_steps=ifelse(is.na(steps), mean, steps)) %>% ungroup() %>% slice(300:10)
 
 # Create a new dataset with the NA values filled
 
@@ -101,15 +86,13 @@ str(New_data)
 
 #Create a histogram of the total steps taken each day
 
-#Figure 3
-
 New_data %>% group_by(date) %>% summarise(total = sum(as.numeric(new_steps),na.rm = TRUE)) %>% ggplot(aes(x=total))+geom_histogram(bins = 20) + ggtitle("Total number of steps taken each day after filling NA values") + xlab("Total steps") + ylab("Count of total steps")
 
 #Calculate the mean and median of total steps taken daily for the new dataset
 
 New_data %>% group_by(date) %>% summarise(total = sum(as.numeric(new_steps),na.rm = TRUE)) %>% summarise(mean=mean(total), median=median(total))
 
-#The data becomes more normally distributed as shown in the histogram and the equality of the mean and median= 10766 for both.
+#The data becomes more normally distributed as shown in the histogram and the equality of the mean and median
 
 ```
 
@@ -133,7 +116,7 @@ New_data<-mutate(New_data,wday_end=ifelse(weekday=="Sun","Weekend","Weekday"))
 head(New_data)
 
 #Plotting the panel plot required
-#Figure 4
+
 New_data %>% group_by(interval,wday_end) %>% summarise(mean=mean(new_steps)) %>% ggplot(aes(x=interval, y= mean))+geom_line()+ggtitle("Average daily activity pattern")+xlab("interval")+ylab("average steps")+facet_grid(wday_end~.)
 
 #Viewing the first rows of the dataset
