@@ -49,7 +49,8 @@ str(activity_data)
 ```{r}
 #Make a histogram of the total number of steps taken each day
 
-activity_data %>% group_by(date) %>% summarise(total = sum(as.numeric(steps),na.rm = TRUE)) %>% ggplot(aes(x=total))+geom_histogram(bins = 20) + ggtitle("Total number of steps taken each day") + xlab("Total steps") + ylab("Count of total steps")
+activity_data %>% group_by(date) %>% summarise(total = sum(as.numeric(steps),na.rm = TRUE)) %>% ggplot(aes(x=total))+
+geom_histogram(bins = 20) + ggtitle("Total number of steps taken each day") + xlab("Total steps") + ylab("Count of total steps")
 
 
 #Calculate and report the mean and median total number of steps taken per day
@@ -83,7 +84,7 @@ activity_data %>% filter(is.na(steps))%>% nrow()
 #Fill the missing values based in the average of that interval
 
 activity_data %>% group_by(interval) %>% mutate(mean=mean(steps, na.rm =
-                                                                  TRUE),new_steps=ifelse(is.na(steps), mean, steps)) %>% ungroup() %>% slice(300:10)
+                                                 TRUE),new_steps=ifelse(is.na(steps), mean, steps)) %>% ungroup() %>% slice(300:10)
 
 # Create a new dataset with the NA values filled
 
