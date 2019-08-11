@@ -9,6 +9,8 @@ output:
 #Activity Dataset
 
 ```{r}
+#Loading the necessary packages
+
 library(tidyverse)
 
 library(lubridate)
@@ -57,6 +59,9 @@ geom_histogram(bins = 20) + ggtitle("Total number of steps taken each day") + xl
 
 activity_data %>% group_by(date) %>% summarise(total = sum(as.numeric(steps),na.rm = TRUE)) %>% summarise(mean = mean(total), median = median(total))
 
+#So mean = 9354 and median=10395
+
+
 ```
 
 ##What is the average daily activity pattern?
@@ -70,6 +75,8 @@ activity_data %>% group_by(interval) %>% summarise(mean=mean(steps, na.rm = TRUE
 
 activity_data %>% group_by(interval) %>% summarise(mean=mean(steps, na.rm = TRUE)) %>% arrange(desc(mean)) %>% head(1)
 
+# so the interval 835 with the maximum average of 206
+
 ```
 
 ##Imputing missing values
@@ -77,7 +84,7 @@ activity_data %>% group_by(interval) %>% summarise(mean=mean(steps, na.rm = TRUE
 ```{r}
 #report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-# From the summary() output, only the steps column has NA values
+# From the summary() output, only the steps column has NA values so filter the dataset according to steps NA values only
 
 activity_data %>% filter(is.na(steps))%>% nrow()
 
@@ -100,7 +107,7 @@ New_data %>% group_by(date) %>% summarise(total = sum(as.numeric(new_steps),na.r
 
 New_data %>% group_by(date) %>% summarise(total = sum(as.numeric(new_steps),na.rm = TRUE)) %>% summarise(mean=mean(total), median=median(total))
 
-#The data becomes more normally distributed as shown in the histogram and the equality of the mean and median
+#The data becomes more normally distributed as shown in the histogram and the equality of the mean and median= 10766 for both.
 
 ```
 
