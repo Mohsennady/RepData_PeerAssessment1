@@ -48,7 +48,7 @@ str(activity_data)
 
 ##What is mean total number of steps taken per day?
 
-```{r}
+```{r Figure 1}
 #Make a histogram of the total number of steps taken each day
 
 activity_data %>% group_by(date) %>% summarise(total = sum(as.numeric(steps),na.rm = TRUE)) %>% ggplot(aes(x=total))+
@@ -66,7 +66,7 @@ activity_data %>% group_by(date) %>% summarise(total = sum(as.numeric(steps),na.
 
 ##What is the average daily activity pattern?
 
-```{r}
+```{r Figure 2}
 #Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
 activity_data %>% group_by(interval) %>% summarise(mean=mean(steps, na.rm = TRUE)) %>% ggplot(aes(x=interval, y= mean))+geom_line()+ggtitle("Average daily activity pattern")+xlab("interval")+ylab("average steps")
@@ -101,6 +101,8 @@ str(New_data)
 
 #Create a histogram of the total steps taken each day
 
+#Figure 3
+
 New_data %>% group_by(date) %>% summarise(total = sum(as.numeric(new_steps),na.rm = TRUE)) %>% ggplot(aes(x=total))+geom_histogram(bins = 20) + ggtitle("Total number of steps taken each day after filling NA values") + xlab("Total steps") + ylab("Count of total steps")
 
 #Calculate the mean and median of total steps taken daily for the new dataset
@@ -131,7 +133,7 @@ New_data<-mutate(New_data,wday_end=ifelse(weekday=="Sun","Weekend","Weekday"))
 head(New_data)
 
 #Plotting the panel plot required
-
+#Figure 4
 New_data %>% group_by(interval,wday_end) %>% summarise(mean=mean(new_steps)) %>% ggplot(aes(x=interval, y= mean))+geom_line()+ggtitle("Average daily activity pattern")+xlab("interval")+ylab("average steps")+facet_grid(wday_end~.)
 
 #Viewing the first rows of the dataset
